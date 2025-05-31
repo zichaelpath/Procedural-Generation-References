@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<planets>
+    <planet name="Sun" diameter="50" distancetoSun="0" rotationPeriod="0" orbitVelocity="0" />
+    <planet name="Earth" diameter="1" distancetoSun="1" rotationPeriod="1" orbitVelocity="1" />
+    <planet name="Mercury" diameter="0.3" distancetoSun="0.4" rotationPeriod="58.8" orbitVelocity="1.59" />
+    <planet name="Venus" diameter="0.95" distancetoSun="0.72" rotationPeriod="-244.0" orbitVelocity="1.18" />
+</planets>

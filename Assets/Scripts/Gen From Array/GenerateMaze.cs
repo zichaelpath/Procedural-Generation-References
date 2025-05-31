@@ -20,7 +20,7 @@ public class GenerateMaze : MonoBehaviour
     void Start()
     {
         #region GenerateFromArray
-        /*
+        
         // This line of code is related to loading a level from a multi-dimensional array (worldMap above)
         int i,j;
         for (i = 0; i < 10; i++)
@@ -34,7 +34,7 @@ public class GenerateMaze : MonoBehaviour
                 }
             }
         }
-        */
+        
         #endregion
         #region GenerateFromTextFile
         TextAsset t1 = (TextAsset)Resources.Load("maze", typeof(TextAsset));
