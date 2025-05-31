@@ -316,10 +316,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treePrefab: {fileID: 1047062429668982006, guid: f5403eae1ad1bfc419f658d2c8227e36, type: 3}
   maxSlope: 30
-  terrainWidth: 100
-  terrainLength: 100
+  terrainWidth: 200
+  terrainLength: 200
   terrainHeight: 20
-  noiseScale: 0.1
+  noiseScale: 0.08
+  octaves: 3
+  persistence: 0.5
+  lacunarity: 2
 --- !u!4 &742454081
 Transform:
   m_ObjectHideFlags: 0
