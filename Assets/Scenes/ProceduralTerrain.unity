@@ -314,15 +314,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f25e2a67505404585800cb28c55963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrainType: 4
   treePrefab: {fileID: 1047062429668982006, guid: f5403eae1ad1bfc419f658d2c8227e36, type: 3}
   maxSlope: 30
-  terrainWidth: 200
-  terrainLength: 200
+  terrainWidth: 100
+  terrainLength: 100
   terrainHeight: 20
-  noiseScale: 0.08
+  noiseScale: 0.1
   octaves: 3
   persistence: 0.5
-  lacunarity: 2
+  lacunarity: 2.8
+  modificationRadius: 20
+  modificationHeight: 1
+  moveSpeed: 5
+  lookSpeed: 2
 --- !u!4 &742454081
 Transform:
   m_ObjectHideFlags: 0

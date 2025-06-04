@@ -2,9 +2,13 @@ using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class Procedural : MonoBehaviour
 {
+    public enum TerrainType {Desert, Mountainous, Countryside, Rocky, Lake}
+    public TerrainType terrainType;
+
     public GameObject treePrefab;
     public float maxSlope = 30f;
     public int terrainWidth = 100;
@@ -41,7 +45,7 @@ public class Procedural : MonoBehaviour
     {
         //GenerateTerrain();
         GenerateTerrainWithOctaves();
-        GenerateTrees();
+        //GenerateTrees();
         ApplyTextureLayers();
 
         mainCamera = Camera.main;
@@ -259,16 +263,35 @@ public class Procedural : MonoBehaviour
                 }
                 y = y / maxAmplitude * terrainHeight;
 
-                //Apply custom terrain adjustments
-                //Set height to 0 for water areas and color them blue
+
+                if (terrainType == TerrainType.Lake && y < 2)
+                {
+                    y = -5f;
+                }
+                else if (terrainType == TerrainType.Countryside)
+                {
+                    y = Mathf.PerlinNoise(x * 0.05f, z * 0.05f) * 5f; //Small hills variation
+                    //Create river-like dips by adding a lower Perlin layer
+                    float riverNoise = Mathf.PerlinNoise(x * 0.1f, z * 0.1f);
+                    if (riverNoise < 0.4f) //Areas below threshold appear as rivers
+                    {
+                        y -= 2f;
+                    }
+                }
+                else if (terrainType == TerrainType.Desert)
+                {
+                    y = Mathf.Clamp(y, 0, 2);
+                }
+
+                //Set the height to 0 for water areas and color them blue
                 if (y < 0)
                 {
-                    y = 0; //Flatten to 0 for water level
-                    colors[vertexIndex] = Color.blue; //blue for water
+                    y = 0;
+                    colors[vertexIndex] = Color.blue;
                 }
                 else
                 {
-                    //otherwise calculate the color based on height
+                    //Otherwise calculate the color based on height
                     colors[vertexIndex] = CalculateColor(y);
                 }
 
@@ -327,6 +350,33 @@ public class Procedural : MonoBehaviour
 
     Color CalculateColor(float height)
     {
+        switch (terrainType)
+        {
+            case TerrainType.Desert:
+                return height < 1f ? new Color(1f, 0.9f, 0.5f) : new Color(0.9f, 0.8f, 0.4f); //Sand colors, slight brown
+            case TerrainType.Mountainous:
+                if (height < terrainHeight * 0.3f) return Color.green;
+                if (height < terrainHeight * 0.7f) return new Color(0.6f, 0.5f, 0.4f); //Brown rocks
+                return Color.white; // Snow on tops
+            case TerrainType.Countryside:
+                if (height <= 0) return Color.blue; //Water texture at level 0 for lakes
+                if (height < 2f) return new Color(0.3f, 0.7f, 0.3f); //Grassland near water
+                return new Color(0.2f, 0.5f, 0.2f); //Darker green for countryside
+            case TerrainType.Rocky:
+                if (height <= 0) return Color.blue;
+                if (height < 2f) return new Color(0.5f, 0.5f, 0.5f); //Rocky areas
+                return height < terrainHeight * 0.7f ? new Color(0.6f, 0.6f, 0.6f) : Color.white; //Rocky to snow tops
+            case TerrainType.Lake:
+                if (height <= 0) return Color.blue;
+                return height < 3f ? Color.green : new Color(0.4f, 0.3f, 0.2f); //Crass and dirt near lakes
+            default:
+                return Color.green; //Default color
+        }
+
+
+
+
+        /*
         if (height < terrainHeight * 0.25f) //Water Level
         {
             return Color.blue;
@@ -347,6 +397,7 @@ public class Procedural : MonoBehaviour
         {
             return Color.white;
         }
+        */
     }
 
     void GenerateTrees()
